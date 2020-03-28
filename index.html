@@ -1,0 +1,207 @@
+<!-- index.html
+     Made by Thomas Simon
+     Spring 2020
+-->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JSON Setlist</title>
+<style>
+  .result {border-style: solid;
+           border-width: 5px;
+           margin: 2% 2%;
+           border-color:#ff5454;
+           padding:2%;
+           text-align:center;}
+  h1 {background: #ff5454;
+      margin-top: 0;
+      padding: 0;
+      text-align:center;
+      padding:10px;
+      font-style:italic;}
+  body {font-family: "Helvetica";}
+  .button {border-color: #ff5454;
+           border-style: solid;
+           border-width: 2px;
+           padding: 15px 32px;
+           font-family: "Helvetica";
+           text-align: center;
+           display: inline-block;
+           border-radius: 5px;}
+  input[type=text] {
+          padding: 5px 5px;
+          margin: 8px 0;
+          box-sizing: border-box;}
+  select {position: relative;
+          font-family: Arial;
+          background-color: white;
+          border: 2px solid transparent;
+          border-radius: 0;
+          border-color: #ff5454;
+          width:125px;
+          height: 40px;}
+</style>
+</head>
+<body>
+  <script type="text/javascript">
+  setlist = {
+      "songs": [
+        {
+        "title": "Lie, Cheat, Steal",
+        "artists": ["Run The Jewels"],
+        "genres": ["rap", "r&b"],
+        "release": "2014"
+        },
+        {
+        "title": "Spaz",
+        "artists": ["N.E.R.D."],
+        "genres": ["hip-hop", "funk"],
+        "release": "2008"
+        },
+        {
+        "title": "Reagan",
+        "artists": ["Killer Mike"],
+        "genres": ["rap","r&b","hip-hop"],
+        "release": "2012"
+        },
+        {
+        "title": "POWER",
+        "artists": ["Kanye West"],
+        "genres": ["rap","hip-hop"],
+        "release": "2010"
+        },
+        {
+        "title": "PUPPET",
+        "artists": ["Tyler, The Creator"],
+        "genres": ["rap","hip-hop"],
+        "release": "2019"
+        },
+        {
+        "title": "Lean 4 Real (feat. Skepta)",
+        "artists": ["Playboi Carti","Skepta"],
+        "genres": ["rap","hip-hop"],
+        "release": "2018"
+        },
+        {
+        "title": "My Type",
+        "artists": ["Saint Motel"],
+        "genres": ["pop", "funk"],
+        "release": "2014"
+        },
+        {
+        "title": "Black Grease",
+        "artists": ["The Black Angels"],
+        "genres": ["rock"],
+        "release": "2006"
+        },
+        {
+        "title": "Novacane",
+        "artists": ["Frank Ocean"],
+        "genres": ["hip-hop","r&b"],
+        "release": "2011"
+        },
+        {
+        "title": "Hit Eject",
+        "artists": ["The Garden"],
+        "genres": ["punk","hip-hop"],
+        "release": "2020"
+        }
+      ]
+    }
+    // Serialized Display:
+    //  a = JSON.stringify(setlist);
+    //  document.write (a);
+    // ------------------------------------------------------------------------
+    // User Friendly Display:
+    function showAll(){
+      for (i = 0; i < parseInt(setlist.songs.length); i++){
+        document.write("<b>" + setlist.songs[i].title + "</b></br>");
+        document.write("Artist(s): ");
+        for (j = 0; j < parseInt(setlist.songs[i].artists.length); j++){
+          document.write(setlist.songs[i].artists[j]);
+          if (j != parseInt(setlist.songs[i].artists.length) - 1){
+            document.write(", ");
+          }
+        }
+        document.write("<br>");
+        document.write("Genre(s): ");
+        for (k = 0; k < parseInt(setlist.songs[i].genres.length); k++){
+          document.write(setlist.songs[i].genres[k]);
+          if (k != parseInt(setlist.songs[i].genres.length) - 1){
+            document.write(", ");
+          }
+        }
+        document.write("<br>")
+        document.write("Released: " + setlist.songs[i].release + "<br>");
+        document.write("<br>")
+      }
+    }
+    // ------------------------------------------------------------------------
+    // Data Filtering:
+    function makeSelect()
+    {
+      genres = findGenres();
+    	var t= "";
+      t = "<select name='genre' id='mySelect'>";
+      t += "<option disabled selected value> select genre: </option>"
+      for (i = 0; i < genres.length; i++)
+    	   t += "<option>" + genres[i] + "</option>";
+    	t+= "</select>";
+    	return t;
+    }
+
+    function findGenres(){
+      genres = [];
+      for (i = 0; i < parseInt(setlist.songs.length); i++){
+        for (j = 0; j < parseInt(setlist.songs[i].genres.length); j++){
+          if (!genres.includes(setlist.songs[i].genres[j])){
+            genres.push(setlist.songs[i].genres[j]);
+          }
+        }
+      }
+      genres.filter((a, b) => genres.indexOf(a) === b);
+      return genres;
+    }
+
+    function filter(){
+      var s = "";
+      tracker = false;
+      for (i = 0; i < parseInt(setlist.songs.length); i++){
+        for (k = 0; k < parseInt(setlist.songs[i].genres.length); k++){
+          if (setlist.songs[i].genres[k] == document.getElementById("mySelect").value){
+            s+= "<b>" + setlist.songs[i].title + "</b></br></br>";
+            tracker = true;
+          }
+        }
+      }
+      if (tracker){
+        with(document.filter){
+          result.innerHTML = s;
+          result.style.opacity = "1";
+        }
+      }
+      return false;
+    }
+  </script>
+  <h1>Set List Search</h1>
+  <div class=result>
+    <script language="javascript">
+      showAll();
+    </script>
+  </div>
+  <br>
+  <form name="filter" onsubmit="return window.filter()">
+    <script language="javascript">
+      var s = "";
+      s = makeSelect();
+      document.writeln(s);
+    </script>
+    <br>
+    <br>
+    <input class="button" type="submit" value="Filter Songs"/>
+  </form>
+  <br>
+  <div class='result' style="opacity:0;" id='result'>&nbsp;</div>
+</body>
+</html>
