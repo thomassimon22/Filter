@@ -110,8 +110,10 @@
       ]
     }
     // Serialized Display:
-    //  a = JSON.stringify(setlist);
-    //  document.write (a);
+    function serialize(){
+      a = JSON.stringify(setlist);
+      document.write (a);
+    }
     // ------------------------------------------------------------------------
     // User Friendly Display:
     function showAll(){
@@ -165,7 +167,7 @@
     }
 
     function filter(){
-      var s = "";
+      var s = "<h2>Filter:</h2>";
       tracker = false;
       for (i = 0; i < parseInt(setlist.songs.length); i++){
         for (k = 0; k < parseInt(setlist.songs[i].genres.length); k++){
@@ -186,6 +188,13 @@
   </script>
   <h1>Set List Search</h1>
   <div class=result>
+    <h2>Serialized Display:</h2>
+    <script language="javascript">
+      serialize();
+    </script>
+  </div>
+  <div class=result>
+    <h2>User Friendly Display:</h2>
     <script language="javascript">
       showAll();
     </script>
